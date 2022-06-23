@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Answer</title>
+  <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+  <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/javascript/answerJS.js"></script>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <style>
+    body {
+      background-image: url("/javascript/photos/homepage.jpg");
+      background-color: #cccccc;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+    }
+
+    li {
+      float: left;
+    }
+
+    li {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    #userLogged {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    li:hover {
+      background-color: #111;
+    }
+
+    #errorMessage {
+      color: white;
+      -webkit-text-stroke-width: 0.04em;
+      -webkit-text-stroke-color: black;
+      font-size: 1.4em;
+    }
+
+    #SuccessfullyAnsweredQuestion {
+      color: white;
+      -webkit-text-stroke-color: black;
+      font-size: 1.4em;
+    }
+
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+      border: 1px solid black;
+      margin-bottom: 2%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+      background-color: aliceblue;
+    }
+
+    th {
+      font-size: larger;
+      text-align: center;
+    !important;
+      font-weight: bolder;
+      background-color: burlywood;
+    }
+
+    button:hover {
+      background-color: lightgray;
+    !important;
+    }
+
+    .DownVoteButton:hover {
+      background-color: lightgray;
+    !important;
+    }
+
+    .UpVoteButton:hover {
+      background-color: lightgrey;
+    !important;
+    }
+
+    .isDownVoted:hover {
+      background-color: lightgray;
+    !important;
+    }
+
+    .isDownVoted:hover {
+      background-color: lightgray;
+    !important;
+    }
+
+    #isClicked {
+      background-color: burlywood;
+    }
+
+    #isClicked:hover {
+      background-color: #a37943ad;
+    }
+  </style>
+</head>
+<body>
+<span id="userId" style="display: none" th:text="${userId}"></span>
+<span id="userEmail" style="display: none" th:text="${userEmail}"></span>
+<ul>
+  <li><a href="/home">Home</a></li>
+  <li id="logout" class="w3-right"><a href="/auth/logout">Logout</a></li>
+  <li class="w3-right">You are logged in as: <span th:text="${userEmail}"></span></li>
+</ul>
+
+
+<div class="w3-container">
+  <br>
+  <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-green w3-large">
+    Add Answer
+  </button>
+
+  <span id="questionId" th:text="${id}" style="display: none"></span>
+
+  <div id="SuccessfullyAnsweredQuestion">
+
+  </div>
+
+  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+
+      <div class="w3-center"><br>
+        <h2><strong>Put your answer here!</strong></h2>
+        <hr>
+      </div>
+
+      <form class="w3-container" action="javascript:void(0);" method="post">
+        <div class="w3-section">
+          <label><b>Answer:</b></label>
+          <textarea type="text" name="Answer" cols="40" rows="5" id="answer"
+                    class="w3-input w3-border"></textarea>
+        </div>
+      </form>
+
+      <footer class="w3-container">
+        <strong><span id="errorMessage" style="color: black"></span></strong>
+      </footer>
+
+      <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+        <button onclick="document.getElementById('id01').style.display='none'" type="button"
+                class="w3-right w3-button w3-red">Cancel
+        </button>
+        <button class="w3-right w3-button w3-blue" type="button" id="submitAnswer" style="margin-right: 2.6%">
+          Submit
+        </button>
+      </div>
+
+    </div>
+  </div>
+  <br>
+  <p id="tableAnswer">
+  <table>
+    <tr>
+      <th style="width: 56%">Answer</th>
+      <th style="width: 9%">Creator</th>
+      <th style="width: 10%">Date Created</th>
+      <th style="width: 5%">Thumbs up</th>
+      <th style="width: 5%">Up votes</th>
+      <th style="width: 5%">Down votes</th>
+      <th style="width: 5%">Thumbs down</th>
+      <th style="width: 5%">Delete Answer</th>
+    </tr>
+    <tr th:each="answer: ${answerList}">
+      <td th:text="${answer.answer}"></td>
+      <td th:text="${answer.creator}"></td>
+      <td class="CreatedDate" th:text="${answer.createdDate}"></td>
+      <td style="text-align: center">
+                <span th:each="useranswer: ${userAnswerStatusArrayList}">
+                    <span th:if="${useranswer.answer.answerid==answer.answerid and useranswer.status==true}"
+                          class="isUpVoted">
+                    </span>
+                </span>
+        <button class="UpVoteButton" type="button>"><span th:text="${answer.answerid}"
+                                                          style="display: none"></span><img
+                src="/javascript/photos/thumbsUpIcon.png"
+                alt="ThumbsUpIcon"
+                height=50% width=50%></button>
+      </td>
+      <td th:text="${answer.upvotes}"></td>
+      <td th:text="${answer.downvotes}"></td>
+      <td style="text-align: center">
+                <span th:each="useranswer: ${userAnswerStatusArrayList}">
+                        <span th:if="${useranswer.answer.answerid==answer.answerid and useranswer.status==false}"
+                              class="isDownVoted">
+                        </span>
+                    </span>
+        <button class="DownVoteButton" type="button"><span th:text="${answer.answerid}"
+                                                           style="display: none"></span><img
+                src="/javascript/photos/thumbsDown.png"
+                alt="ThumbsDownIcon"
+                height=50% width=50%></button>
+      </td>
+      <td style="text-align: center"><img src="/javascript/photos/deleteIcon.png" alt="DeleteIcon"
+                                          height=50% width=50%>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+</body>
+</html>

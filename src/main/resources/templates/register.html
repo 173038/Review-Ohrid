@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-image: url("/javascript/photos/locksecurity.jpg");
+            background-color: #cccccc;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            background-color: #111;
+        }
+
+        #errorMessage {
+            color: white;
+            -webkit-text-stroke-width: 0.04em;
+            -webkit-text-stroke-color: black;
+            font-size: 1.4em;
+        }
+    </style>
+</head>
+<body>
+<ul>
+    <li><a href="/auth/register">Register</a></li>
+    <li><a href="/auth/login">Login</a></li>
+</ul>
+<div class="container text-center">
+    <form th:action="@{/auth/register-successful}" th:object="${user}"
+          method="post" style="max-width: 600px; margin: 0 auto;">
+        <div class="m-3">
+            <div class="form-group row">
+                <div class="col-8">
+                    <input type="email" class="form-control" th:field="*{email}" placeholder="xyz@gmail.com"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-8">
+                    <input type="text" th:field="*{username}" class="form-control" placeholder="Username"
+                           minlength="2" maxlength="20"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-8">
+                    <input type="password" class="form-control" th:field="*{password}" placeholder="Password"
+                           pattern="(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{7,}"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-8">
+                    <input type="text" th:field="*{age}" class="form-control" placeholder="Age"/>
+                </div>
+            </div>
+            <div class="form-group row" style="text-align: left!important; margin-right: 30%">
+                <strong><span id="errorMessage" th:text="${res}"></span></strong>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-secondary" style="display: flex">Register</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
