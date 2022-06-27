@@ -124,7 +124,7 @@ public class AuthenticationServiceImpl implements AuthenticationService
         }
         if (passwordHashing.passwordEncoder().matches(userDTO.getPassword(), u.getPassword()) == false)
         {
-            throw new UserValidateException("The email and password does not match");
+            throw new UserValidateException("The email and password does not match OOO");
         }
         return u;
     }

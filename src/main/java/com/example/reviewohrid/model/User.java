@@ -25,6 +25,7 @@ public class User {
     public User() {
     }
 
+
     public User(Integer id, String email, String password, String username, Integer age, List<UserAnswerStatus> userAnswerStatusList) {
         this.id = id;
         this.email = email;

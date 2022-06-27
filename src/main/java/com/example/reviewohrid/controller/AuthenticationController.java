@@ -63,6 +63,8 @@ public class AuthenticationController
         }
     }
 
+
+
     @PostMapping("/login-successful")
     @ResponseBody
     public ResponseEntity<User> processLogin(@RequestParam("email") String email, @RequestParam("password") String password)
@@ -77,17 +79,20 @@ public class AuthenticationController
         return ResponseEntity.ok(u);
     }
 
-//    @PostMapping("/login-successful")
-//    public ResponseEntity<User> homePage(String email, String password)throws UserValidateException {
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-//        UserDTO userDTO = new UserDTO();
-//        userDTO.setEmail(email);
-//        userDTO.setPassword(password);
-//        User u = authenticationService.validateAndLogin(userDTO);
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        return ResponseEntity.ok(u);
-//         //   return "redirect:/home";
-//    }
+
+//@PostMapping("/login-successful")
+//public String processLogin(@RequestParam("email") String email, @RequestParam("password") String password)
+//        throws UserValidateException
+//{
+//    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+//    UserDTO userDTO = new UserDTO();
+//    userDTO.setEmail(email);
+//    userDTO.setPassword(password);
+//    User u = authenticationService.validateAndLogin(userDTO);
+//    SecurityContextHolder.getContext().setAuthentication(authentication);
+//    return "home";
+//}
+
 
 
     @GetMapping("/logout")
