@@ -14,7 +14,6 @@ $(document).ready(function () {
                 window.sessionStorage.setItem("loggedUser", JSON.parse(obj).email);
                 window.sessionStorage.setItem("loggedUserId", JSON.parse(obj).id);
                 window.location = "http://localhost:8080/home";
-                alert("vo success");
             },
             error: function (xhr, status, error) {
                 let errorMessage = xhr.responseJSON.message;

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +83,7 @@ public class QuestionServiceImpl implements QuestionService
             question.setModifier(questionDTO.getEmail());
             question.setTitle(questionDTO.getTitle());
             question.setQuestion(questionDTO.getQuestion());
+            question.setCreatedDate(Instant.now()); //TODO: ovde probvi
             questionRepository.save(question);
         }
         return res;
