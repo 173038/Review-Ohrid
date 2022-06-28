@@ -1,8 +1,11 @@
 package com.example.reviewohrid.controller;
 
 import com.example.reviewohrid.DTO.AnswerDTO;
+import com.example.reviewohrid.DTO.UserAnswerDTO;
 import com.example.reviewohrid.DTO.UserAnswerStatusDTO;
+import com.example.reviewohrid.DTO.UserQuestionDTO;
 import com.example.reviewohrid.exceptions.InvalidAnswerException;
+import com.example.reviewohrid.exceptions.InvalidCreatorException;
 import com.example.reviewohrid.model.Answer;
 import com.example.reviewohrid.model.User;
 import com.example.reviewohrid.model.UserAnswerStatus;
@@ -78,5 +81,12 @@ public class AnswerController
     {
         answerService.downVoteAnswer(userAnswerStatusDTO);
         return ResponseEntity.ok("OK");
+    }
+    @RequestMapping(value = "/delete-answer", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<String> deleteAnswer(@RequestBody UserAnswerDTO userAnswerDTO) throws InvalidCreatorException
+    {
+        answerService.deleteAnswer(userAnswerDTO);
+        return ResponseEntity.ok("Success");
     }
 }

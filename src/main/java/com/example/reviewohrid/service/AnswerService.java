@@ -1,11 +1,16 @@
 package com.example.reviewohrid.service;
 
 import com.example.reviewohrid.DTO.AnswerDTO;
+import com.example.reviewohrid.DTO.UserAnswerDTO;
 import com.example.reviewohrid.DTO.UserAnswerStatusDTO;
+import com.example.reviewohrid.DTO.UserQuestionDTO;
 import com.example.reviewohrid.exceptions.InvalidAnswerException;
+import com.example.reviewohrid.exceptions.InvalidCreatorException;
 import com.example.reviewohrid.model.Answer;
 import com.example.reviewohrid.model.UserAnswerStatus;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 
 public interface AnswerService {
@@ -36,4 +41,5 @@ public interface AnswerService {
 
     void downVoteAnswer(UserAnswerStatusDTO userAnswerStatusDTO);
 
+    void deleteAnswer(UserAnswerDTO userAnswerDTO) throws InvalidCreatorException;
 }

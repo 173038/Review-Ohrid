@@ -215,9 +215,14 @@
                 alt="ThumbsDownIcon"
                 height=50% width=50%></button>
       </td>
-      <td style="text-align: center"><img src="/javascript/photos/deleteIcon.png" alt="DeleteIcon"
-                                          height=50% width=50%>
-      </td>
+      <td style="text-align: center">
+        <button th:onclick="'javascript:deleteAnswer(' + ${answer.answerId} + ');'" type="button"><img
+                src="/javascript/photos/deleteIcon.png" alt="DeleteIcon"
+                height=50% width=50%></button>
+<!--        <button th:onclick="'javascript:deleteAnswer(' + ${answer.answerId} + ',' + ${user.userId} +','+ ${question.id} + ');'" type="button"><img-->
+<!--                src="/javascript/photos/deleteIcon.png" alt="DeleteIcon"-->
+<!--                height=50% width=50%></button>-->
+      </td>-->
     </tr>
   </table>
 </div>

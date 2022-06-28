@@ -1,6 +1,7 @@
 package com.example.reviewohrid.repository;
 
 import com.example.reviewohrid.model.Answer;
+import com.example.reviewohrid.model.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,5 +25,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     @Query("UPDATE Answer a SET a.upvotes = :newUpVotes WHERE a.answerId = :answerId")
     public void updateUpVotes(@Param("answerId") Integer answerId, @Param("newUpVotes") Integer upVotes);
 
+    @Query("SELECT a FROM Answer a WHERE a.id=?1")
+    public Answer findById(int id);
 
 }

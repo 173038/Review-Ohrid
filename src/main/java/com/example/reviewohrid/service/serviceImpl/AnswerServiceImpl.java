@@ -1,8 +1,11 @@
 package com.example.reviewohrid.service.serviceImpl;
 
 import com.example.reviewohrid.DTO.AnswerDTO;
+import com.example.reviewohrid.DTO.UserAnswerDTO;
 import com.example.reviewohrid.DTO.UserAnswerStatusDTO;
+import com.example.reviewohrid.DTO.UserQuestionDTO;
 import com.example.reviewohrid.exceptions.InvalidAnswerException;
+import com.example.reviewohrid.exceptions.InvalidCreatorException;
 import com.example.reviewohrid.model.Answer;
 import com.example.reviewohrid.model.Question;
 import com.example.reviewohrid.model.User;
@@ -10,6 +13,7 @@ import com.example.reviewohrid.model.UserAnswerStatus;
 import com.example.reviewohrid.repository.AnswerRepository;
 import com.example.reviewohrid.repository.QuestionRepository;
 //import com.example.reviewohrid.repository.UserAnswerStatusRepository;
+import com.example.reviewohrid.repository.UserRepository;
 import com.example.reviewohrid.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +37,9 @@ public class AnswerServiceImpl implements AnswerService
 
    @Autowired
     private EntityManager entityManager;
+
+   @Autowired
+    private UserRepository userRepository;
 
 //    private final UserAnswerStatusRepository userAnswerStatusRepository;
 //
@@ -229,4 +236,26 @@ public class AnswerServiceImpl implements AnswerService
             }
         }
     }
+
+
+    @Override
+    @Transactional
+    public void deleteAnswer(UserAnswerDTO userAnswerDTO) throws InvalidCreatorException
+    {
+        Answer answerToDelete = answerRepository.findById(userAnswerDTO.getAnswerId());
+        User user = userRepository.findById(userAnswerDTO.getUserId());
+        if (answerToDelete.getCreator().equals(user.getEmail()))
+        {
+            String queryDeleteAnswer = "DELETE FROM answer WHERE answer.answer_id=?1";
+            Query nativeQueryDeleteAnswer = entityManager.createNativeQuery(queryDeleteAnswer);
+            nativeQueryDeleteAnswer.setParameter(1, answerToDelete.getAnswerId());
+            nativeQueryDeleteAnswer.executeUpdate();
+        }
+        else
+        {
+            throw new InvalidCreatorException(
+                    "Unable to delete this answer. User `" + user.getEmail() + "` is not the creator of the answer!");
+        }
+    }
+
 }
