@@ -103,7 +103,7 @@ public class QuestionServiceImpl implements QuestionService
         User user = userRepository.findById(userQuestionDTO.getUserId());
         if (questionToDelete.getCreator().equals(user.getEmail()))
         {
-            String queryDeleteQuestion = "DELETE FROM question WHERE question.id=?1";
+            String queryDeleteQuestion = "DELETE FROM questions WHERE questions.id=?1";
             Query nativeQueryDeleteQuestion = entityManager.createNativeQuery(queryDeleteQuestion);
             nativeQueryDeleteQuestion.setParameter(1, questionToDelete.getId());
             nativeQueryDeleteQuestion.executeUpdate();
