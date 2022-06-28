@@ -13,7 +13,7 @@ import java.util.ArrayList;
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
-    @Query(value = "SELECT * FROM Answer a WHERE a.questionid=?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM answer a WHERE a.question_id=?1", nativeQuery = true)
     public ArrayList<Answer> getAllAnswerForQuestion(Integer id);
 
     @Query("SELECT a FROM Answer a WHERE a.answerId=?1")

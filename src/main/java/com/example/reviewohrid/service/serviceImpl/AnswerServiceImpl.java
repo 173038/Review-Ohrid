@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.time.Instant;
 import java.util.ArrayList;
 
 
@@ -78,6 +79,7 @@ public class AnswerServiceImpl implements AnswerService
             answer.setCreator(answerDTO.getEmail());
             answer.setDownvotes(0);
             answer.setUpvotes(0);
+            answer.setCreatedDate(Instant.now());
             Question question = questionRepository.findById(answerDTO.getId());
             if (question == null)
             {
@@ -92,7 +94,7 @@ public class AnswerServiceImpl implements AnswerService
     @Override
     public ArrayList<Answer> getAllAnswerForQuestion(Integer id)
     {
-        return answerRepository.getAllAnswerForQuestion(id);
+        return answerRepository.getAllAnswerForQuestion(id);  //ovde trebit question id d ago zejme, vo slucajov 3
     }
 
     @Override
@@ -110,7 +112,7 @@ public class AnswerServiceImpl implements AnswerService
     @Transactional
     public ArrayList<UserAnswerStatus> checkIfPreviousVoted(Integer userId, Integer answerId)
     {
-        String queryCheckIfUpVoted = "SELECT * FROM user_answer_status WHERE answer_id=?1 AND user_id=?2";
+        String queryCheckIfUpVoted = "SELECT * FROM useranswerstatus WHERE answer_id=?1 AND user_id=?2";
         Query nativeQueryCheckIfUpVoted = entityManager.createNativeQuery(queryCheckIfUpVoted, UserAnswerStatus.class);
         nativeQueryCheckIfUpVoted.setParameter(1, answerId);
         nativeQueryCheckIfUpVoted.setParameter(2, userId);
@@ -121,7 +123,7 @@ public class AnswerServiceImpl implements AnswerService
     @Transactional
     public void insertNewUserAnswerStatus(Integer userId, Integer answerId, boolean status)
     {
-        String queryToInsert = "INSERT INTO user_answer_status(answer_id,user_id,status) VALUES (?1,?2,?3)";
+        String queryToInsert = "INSERT INTO useranswerstatus(answer_id,user_id,status) VALUES (?1,?2,?3)";
         Query nativeQueryToInsert = entityManager.createNativeQuery(queryToInsert);
         nativeQueryToInsert.setParameter(1, answerId);
         nativeQueryToInsert.setParameter(2, userId);
@@ -133,7 +135,7 @@ public class AnswerServiceImpl implements AnswerService
     @Transactional
     public void deleteUserAnswerStatus(Integer userId, Integer answerId)
     {
-        String queryDeleteRow = "DELETE FROM user_answer_status WHERE user_id=?1 AND answer_id=?2";
+        String queryDeleteRow = "DELETE FROM useranswerstatus WHERE user_id=?1 AND answer_id=?2";
         Query nativeQueryDeleteRow = entityManager.createNativeQuery(queryDeleteRow);
         nativeQueryDeleteRow.setParameter(1, userId);
         nativeQueryDeleteRow.setParameter(2, answerId);
@@ -166,7 +168,7 @@ public class AnswerServiceImpl implements AnswerService
     @Transactional
     public void updateUserAnswerStatus(Integer userId, Integer answerId, boolean status)
     {
-        String queryUpdateStatusToTrue = "UPDATE user_answer_status SET status=?3 WHERE answer_id=?1 AND user_id=?2";
+        String queryUpdateStatusToTrue = "UPDATE useranswerstatus SET status=?3 WHERE answer_id=?1 AND user_id=?2";
         Query nativeQueryUpdateStatusToTrue = entityManager.createNativeQuery(queryUpdateStatusToTrue);
         nativeQueryUpdateStatusToTrue.setParameter(1, answerId);
         nativeQueryUpdateStatusToTrue.setParameter(2, userId);

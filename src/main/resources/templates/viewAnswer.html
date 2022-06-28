@@ -7,7 +7,7 @@
   <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <script type="text/javascript" src="../javascript/answerJS.js"></script>
+  <script type="text/javascript" src="/javascript/answerJS.js"></script>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <style>
     body {
@@ -191,11 +191,11 @@
       <td class="CreatedDate" th:text="${answer.createdDate}"></td>
       <td style="text-align: center">
                 <span th:each="useranswer: ${userAnswerStatusArrayList}">
-                    <span th:if="${useranswer.answer.answerid==answer.answerid and useranswer.status==true}"
+                    <span th:if="${useranswer.answer.answerid==answer.answerId and useranswer.status==true}"
                           class="isUpVoted">
                     </span>
                 </span>
-        <button class="UpVoteButton" type="button>"><span th:text="${answer.answerid}"
+        <button class="UpVoteButton" type="button>"><span th:text="${answer.answerId}"
                                                           style="display: none"></span><img
                 src="/javascript/photos/thumbsUpIcon.png"
                 alt="ThumbsUpIcon"
@@ -205,11 +205,11 @@
       <td th:text="${answer.downvotes}"></td>
       <td style="text-align: center">
                 <span th:each="useranswer: ${userAnswerStatusArrayList}">
-                        <span th:if="${useranswer.answer.answerid==answer.answerid and useranswer.status==false}"
+                        <span th:if="${useranswer.answer.answerId==answer.answerId and useranswer.status==false}"
                               class="isDownVoted">
                         </span>
                     </span>
-        <button class="DownVoteButton" type="button"><span th:text="${answer.answerid}"
+        <button class="DownVoteButton" type="button"><span th:text="${answer.answerId}"
                                                            style="display: none"></span><img
                 src="/javascript/photos/thumbsDown.png"
                 alt="ThumbsDownIcon"

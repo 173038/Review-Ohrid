@@ -37,32 +37,8 @@ public class AnswerController
         this.userAnswerStatusService = userAnswerStatusService;
     }
 
-//    @GetMapping("/{userId}/view-answer/{answerId}")
-//    public String ViewAnswer(@PathVariable String answerId, @PathVariable String userId, Model model, Authentication authentication)
-//    {
-//        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)
-//        {
-//            return "login";
-//        }
-//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//        User user = authenticationService.findByEmail(userDetails.getUsername());
-//        model.addAttribute("userEmail", user.getEmail());
-//        model.addAttribute("userId", user.getId());
-//        model.addAttribute("id", answerId);
-//        ArrayList<Answer> answerList = answerService.getAllAnswerForQuestion(Integer.parseInt(answerId));
-//        if(answerList.isEmpty()){
-//            return "home";
-//        }
-//        else {
-//            ArrayList<UserAnswerStatus> userAnswerStatusArrayList = userAnswerStatusService.getAllByUserId(Integer.parseInt(userId));
-//            model.addAttribute("userAnswerStatusArrayList", userAnswerStatusArrayList);
-//            model.addAttribute("answerList", answerList);
-//            return "viewAnswer";
-//        }
-//    }
-
-    @GetMapping("/{userId}/view-answer/{answerId}")
-    public String ViewAnswer(@PathVariable String answerId, @PathVariable String userId, Model model, Authentication authentication)
+    @GetMapping("/{userId}/view-answer/{questionId}")
+    public String ViewAnswer(@PathVariable String questionId, @PathVariable String userId, Model model, Authentication authentication)
     {
         if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)
         {
@@ -72,8 +48,8 @@ public class AnswerController
         User user = authenticationService.findByEmail(userDetails.getUsername());
         model.addAttribute("userEmail", user.getEmail());
         model.addAttribute("userId", user.getId());
-        model.addAttribute("id", answerId);
-        ArrayList<Answer> answerList = answerService.getAllAnswerForQuestion(Integer.parseInt(answerId));
+        model.addAttribute("id", questionId);
+        ArrayList<Answer> answerList = answerService.getAllAnswerForQuestion(Integer.parseInt(questionId));
         ArrayList<UserAnswerStatus> userAnswerStatusArrayList = userAnswerStatusService.getAllByUserId(Integer.parseInt(userId));
         model.addAttribute("userAnswerStatusArrayList", userAnswerStatusArrayList);
         model.addAttribute("answerList", answerList);
