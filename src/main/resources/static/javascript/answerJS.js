@@ -96,32 +96,15 @@ function deleteAnswer(answerId, userId, questionId) {
         data: JSON.stringify(userAnswer),
         contentType: "application/JSON",
         success: function (data) {
-            window.location = "http://localhost:8080/answers/"+userId+"/view-answer/"+questionId;
+            function redirectToViewAnswer(userId,questionId) {
+                window.location = window.location = "http://localhost:8080/answers/" + userId + "/view-answer/" + questionId;
+                document.location.reload()
+            }
+           //   window.location = "http://localhost:8080/answers/"+userId+"/view-answer/"+questionId;
+           // // window.location="http://localhost:8080/home";
         },
         error: function (data) {
             alert(data.responseJSON.message);
         }
     })
 }
-
-
-
-//
-// function deleteAnswer(answerId) {
-//     let userAnswer = {
-//         userId: sessionStorage.getItem("loggedUserId"),
-//         answerId: answerId
-//     }
-//     $.ajax({
-//         type: "DELETE",
-//         url: "http://localhost:8080/answers/delete-answer",
-//         data: JSON.stringify(userAnswer),
-//         contentType: "application/JSON",
-//         success: function (data) {
-//             window.location = "http://localhost:8080/home";
-//         },
-//         error: function (data) {
-//             alert(data.responseJSON.message);
-//         }
-//     })
-// }
