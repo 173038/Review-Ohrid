@@ -26,12 +26,37 @@ $(document).ready(function () {
             data: JSON.stringify(answer),
             contentType: "application/JSON",
             success: function (data) {
-                let message = "You have answered the question. Thanks :)";
+                function sleep(milliseconds) {
+                    return new Promise(resolve => setTimeout(resolve, milliseconds));
+                }
+
+                let message = "You have asked a question. Now wait someone to answer it :)";
                 $("#SuccessfullyAnsweredQuestion").html(message);
+
                 document.getElementById('id01').style.display = 'none';
                 $("#answer").val("");
-                let id = $("#questionId").text();
-                window.location = "http://localhost:8080/answers/" + userId + "/view-answer/" + id;
+
+                document.location.reload()
+
+
+                // function sleep(milliseconds) {
+                //     return new Promise(resolve => setTimeout(resolve, milliseconds));
+                // }
+                //
+                //
+                //
+                // let message = "You have answered the question. Thanks :)";
+                // $("#SuccessfullyAnsweredQuestion").html(message);
+                // document.getElementById('id01').style.display = 'none';
+                // $("#answer").val("");
+                // let id = $("#questionId").text();
+                // // window.location = "http://localhost:8080/answers/" + userId + "/view-answer/" + id;
+                // async function redirect() {
+                //     await sleep(2000);
+                //     window.location = "http://localhost:8080/answers/" + userId + "/view-answer/" + id;
+                // }
+                //
+                // redirect();
             },
             error: function (xhr, status, error) {
                 let errorMessage = xhr.responseJSON.message;
@@ -96,12 +121,7 @@ function deleteAnswer(answerId, userId, questionId) {
         data: JSON.stringify(userAnswer),
         contentType: "application/JSON",
         success: function (data) {
-            function redirectToViewAnswer(userId,questionId) {
-                window.location = window.location = "http://localhost:8080/answers/" + userId + "/view-answer/" + questionId;
-                document.location.reload()
-            }
-           //   window.location = "http://localhost:8080/answers/"+userId+"/view-answer/"+questionId;
-           // // window.location="http://localhost:8080/home";
+            document.location.reload()
         },
         error: function (data) {
             alert(data.responseJSON.message);
