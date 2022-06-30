@@ -26,9 +26,10 @@ $(document).ready(function () {
             data: JSON.stringify(answer),
             contentType: "application/JSON",
             success: function (data) {
-                function sleep(milliseconds) {
-                    return new Promise(resolve => setTimeout(resolve, milliseconds));
-                }
+                alert("vo JS success")
+                // function sleep(milliseconds) {
+                //     return new Promise(resolve => setTimeout(resolve, milliseconds));
+                // }
 
                 let message = "You have asked a question. Now wait someone to answer it :)";
                 $("#SuccessfullyAnsweredQuestion").html(message);
@@ -38,6 +39,12 @@ $(document).ready(function () {
 
                 document.location.reload()
 
+                // async function redirect() {
+                //     await sleep(2000);
+                //     // window.location = "http://localhost:8080/home";
+                // }
+                //
+                // redirect();
 
                 // function sleep(milliseconds) {
                 //     return new Promise(resolve => setTimeout(resolve, milliseconds));

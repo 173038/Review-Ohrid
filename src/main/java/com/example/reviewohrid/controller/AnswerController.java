@@ -59,12 +59,20 @@ public class AnswerController
         return "viewAnswer";
     }
 
+//    @PostMapping("/answer-successful")
+//    @ResponseBody
+//    public ResponseEntity<Answer> postAnswer(@RequestBody AnswerDTO answerDTO) throws InvalidAnswerException
+//    {
+//        Answer answer = answerService.validateAndSave(answerDTO);
+//        return ResponseEntity.ok(answer);
+//    }
+
     @PostMapping("/answer-successful")
     @ResponseBody
-    public ResponseEntity<Answer> postAnswer(@RequestBody AnswerDTO answerDTO) throws InvalidAnswerException
+    public ResponseEntity<String> postAnswer(@RequestBody AnswerDTO answerDTO) throws InvalidAnswerException
     {
         Answer answer = answerService.validateAndSave(answerDTO);
-        return ResponseEntity.ok(answer);
+        return ResponseEntity.ok("success");
     }
 
     @PostMapping("/up-vote-answer")
