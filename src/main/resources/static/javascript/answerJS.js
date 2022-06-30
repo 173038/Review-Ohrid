@@ -26,13 +26,13 @@ $(document).ready(function () {
             data: JSON.stringify(answer),
             contentType: "application/JSON",
             success: function (data) {
-                alert("vo JS success")
+                // alert("vo JS success")
                 // function sleep(milliseconds) {
                 //     return new Promise(resolve => setTimeout(resolve, milliseconds));
                 // }
 
-                let message = "You have asked a question. Now wait someone to answer it :)";
-                $("#SuccessfullyAnsweredQuestion").html(message);
+                // let message = "You have asked a question. Now wait someone to answer it :)";
+                // $("#SuccessfullyAnsweredQuestion").html(message);
 
                 document.getElementById('id01').style.display = 'none';
                 $("#answer").val("");
@@ -84,6 +84,7 @@ $(document).ready(function () {
             data: JSON.stringify(userAnswerStatus),
             contentType: "application/JSON",
             success: function (data) {
+                alert("thumbsup alert")
                 window.location = "http://localhost:8080/answers/" + userId + "/view-answer/" + questionId;
             },
             error: function (xhr, status, error) {

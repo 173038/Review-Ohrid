@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT q FROM Question q WHERE q.id=?1")
-    public Question findById(int id);
+    public Question findById(int id); //ova e deka od jpa findById ni barase long
 }

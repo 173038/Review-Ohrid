@@ -28,4 +28,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     @Query("SELECT a FROM Answer a WHERE a.id=?1")
     public Answer findById(int id);
 
+    void deleteAllByQuestion(Question question);
+
 }

@@ -258,4 +258,21 @@ public class AnswerServiceImpl implements AnswerService
         }
     }
 
+    @Override
+    public void deleteAnswer2(Answer answer) {
+        {
+            Answer answerToDelete = answerRepository.findById(answer.getAnswerId());
+            User user = userRepository.findByEmail(answer.getCreator());
+            if (answerToDelete.getCreator().equals(user.getEmail()))
+            {
+//                String queryDeleteAnswer = "DELETE FROM answer WHERE answer.answer_id=?1";
+//                Query nativeQueryDeleteAnswer = entityManager.createNativeQuery(queryDeleteAnswer);
+//                nativeQueryDeleteAnswer.setParameter(1, answerToDelete.getAnswerId());
+//                nativeQueryDeleteAnswer.executeUpdate();
+                //answerRepository.deleteById(Long.valueOf(answer.getAnswerId())); //ovde sakat int
+                    answerRepository.getAnswerById(answer.getAnswerId());
+            }
+        }
+    }
+
 }

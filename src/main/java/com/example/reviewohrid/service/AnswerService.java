@@ -42,4 +42,6 @@ public interface AnswerService {
     void downVoteAnswer(UserAnswerStatusDTO userAnswerStatusDTO);
 
     void deleteAnswer(UserAnswerDTO userAnswerDTO) throws InvalidCreatorException;
+
+    void deleteAnswer2(Answer answer);
 }
