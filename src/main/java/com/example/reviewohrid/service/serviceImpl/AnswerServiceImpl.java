@@ -35,10 +35,10 @@ public class AnswerServiceImpl implements AnswerService
     @Autowired
     private QuestionRepository questionRepository;
 
-   @Autowired
+    @Autowired
     private EntityManager entityManager;
 
-   @Autowired
+    @Autowired
     private UserRepository userRepository;
 
 //    private final UserAnswerStatusRepository userAnswerStatusRepository;
@@ -229,7 +229,7 @@ public class AnswerServiceImpl implements AnswerService
         ArrayList<UserAnswerStatus> userAnswerStatusArrayList = checkIfPreviousVoted(userId, userAnswerStatusDTO.getAnswerId());
         if (userAnswerStatusArrayList.isEmpty())
         {
-          //  insertNewUserAnswerStatus(userId, userAnswerStatusDTO.getAnswerId(), false);
+            //  insertNewUserAnswerStatus(userId, userAnswerStatusDTO.getAnswerId(), false);
             updateDownVotes(1, userAnswerStatusDTO.getAnswerId());
         }
         else
@@ -281,7 +281,7 @@ public class AnswerServiceImpl implements AnswerService
 //                nativeQueryDeleteAnswer.setParameter(1, answerToDelete.getAnswerId());
 //                nativeQueryDeleteAnswer.executeUpdate();
                 //answerRepository.deleteById(Long.valueOf(answer.getAnswerId())); //ovde sakat int
-                    answerRepository.getAnswerById(answer.getAnswerId());
+                answerRepository.getAnswerById(answer.getAnswerId());
             }
         }
     }

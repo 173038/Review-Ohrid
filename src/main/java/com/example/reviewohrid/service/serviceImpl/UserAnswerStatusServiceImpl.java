@@ -20,7 +20,7 @@ public class UserAnswerStatusServiceImpl implements UserAnswerStatusService
     @Override
     public ArrayList<UserAnswerStatus> getAllByUserId(Integer id)
     {
-        String queryFindAllByUserId = "SELECT * FROM useranswerstatus WHERE user_id=?1";
+        String queryFindAllByUserId = "SELECT * FROM useranswerstatus WHERE users=?1";
         Query nativeQueryFindAllByUserId = entityManager.createNativeQuery(queryFindAllByUserId, UserAnswerStatus.class);
         nativeQueryFindAllByUserId.setParameter(1, id);
         return (ArrayList<UserAnswerStatus>) nativeQueryFindAllByUserId.getResultList();
