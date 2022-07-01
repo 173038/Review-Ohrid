@@ -9,10 +9,12 @@ import java.io.Serializable;
 public class UserAnswerStatus implements Serializable{
 
     @Id
+    @JoinColumn(name = "id")
     @ManyToOne
     private User user;
 
     @Id
+    @JoinColumn(name = "answer_id")
     @ManyToOne
     private Answer answer;
 

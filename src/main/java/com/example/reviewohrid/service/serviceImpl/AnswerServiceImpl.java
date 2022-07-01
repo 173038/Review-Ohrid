@@ -108,12 +108,23 @@ public class AnswerServiceImpl implements AnswerService
     @Transactional
     public Integer getUserIdFromEmail(String email)
     {
-        String queryFindUserId = "SELECT * FROM user WHERE email=?1";
+        String queryFindUserId = "SELECT * FROM users WHERE email=?1";
         Query nativeQueryFindUserId = entityManager.createNativeQuery(queryFindUserId, User.class);
         nativeQueryFindUserId.setParameter(1, email);
         User user = (User) nativeQueryFindUserId.getSingleResult();
         return user.getId();
     }
+
+//    @Override
+//    @Transactional
+//    public ArrayList<UserAnswerStatus> checkIfPreviousVoted(Integer userId, Integer answerId)
+//    {
+//        String queryCheckIfUpVoted = "SELECT * FROM useranswerstatus WHERE useranswerstatus.answerid=?1 AND user_id=?2";
+//        Query nativeQueryCheckIfUpVoted = entityManager.createNativeQuery(queryCheckIfUpVoted, UserAnswerStatus.class);
+//        nativeQueryCheckIfUpVoted.setParameter(1, answerId);
+//        nativeQueryCheckIfUpVoted.setParameter(2, userId);
+//        return (ArrayList<UserAnswerStatus>) nativeQueryCheckIfUpVoted.getResultList();
+//    }
 
     @Override
     @Transactional
@@ -130,7 +141,7 @@ public class AnswerServiceImpl implements AnswerService
     @Transactional
     public void insertNewUserAnswerStatus(Integer userId, Integer answerId, boolean status)
     {
-        String queryToInsert = "INSERT INTO useranswerstatus(answer_id,user_id,status) VALUES (?1,?2,?3)";
+        String queryToInsert = "INSERT INTO useranswerstatus(answer_id,userid,status) VALUES (?1,?2,?3)";
         Query nativeQueryToInsert = entityManager.createNativeQuery(queryToInsert);
         nativeQueryToInsert.setParameter(1, answerId);
         nativeQueryToInsert.setParameter(2, userId);
@@ -191,7 +202,7 @@ public class AnswerServiceImpl implements AnswerService
         ArrayList<UserAnswerStatus> userAnswerStatusArrayList = checkIfPreviousVoted(userId, userAnswerStatusDTO.getAnswerId());
         if (userAnswerStatusArrayList.isEmpty())
         {
-            insertNewUserAnswerStatus(userId, userAnswerStatusDTO.getAnswerId(), true);
+            //insertNewUserAnswerStatus(userId, userAnswerStatusDTO.getAnswerId(), true);
             updateUpVotes(1, userAnswerStatusDTO.getAnswerId());
         }
         else
@@ -218,7 +229,7 @@ public class AnswerServiceImpl implements AnswerService
         ArrayList<UserAnswerStatus> userAnswerStatusArrayList = checkIfPreviousVoted(userId, userAnswerStatusDTO.getAnswerId());
         if (userAnswerStatusArrayList.isEmpty())
         {
-            insertNewUserAnswerStatus(userId, userAnswerStatusDTO.getAnswerId(), false);
+          //  insertNewUserAnswerStatus(userId, userAnswerStatusDTO.getAnswerId(), false);
             updateDownVotes(1, userAnswerStatusDTO.getAnswerId());
         }
         else

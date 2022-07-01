@@ -84,7 +84,6 @@ $(document).ready(function () {
             data: JSON.stringify(userAnswerStatus),
             contentType: "application/JSON",
             success: function (data) {
-                alert("thumbsup alert")
                 window.location = "http://localhost:8080/answers/" + userId + "/view-answer/" + questionId;
             },
             error: function (xhr, status, error) {
