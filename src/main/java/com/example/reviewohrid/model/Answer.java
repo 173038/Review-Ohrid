@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name="answer")
-public class Answer {
+public class Answer implements Comparable<Answer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -115,6 +115,11 @@ public class Answer {
 
     public void setUserAnswerStatusList(List<UserAnswerStatus> userAnswerStatusList) {
         this.userAnswerStatusList = userAnswerStatusList;
+    }
+
+    @Override
+    public int compareTo(Answer o) {
+        return 0;
     }
 }
 

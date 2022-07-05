@@ -23,7 +23,10 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
+import static java.util.Comparator.*;
 
 
 @Service
@@ -41,11 +44,6 @@ public class AnswerServiceImpl implements AnswerService
     @Autowired
     private UserRepository userRepository;
 
-//    private final UserAnswerStatusRepository userAnswerStatusRepository;
-//
-//    public AnswerServiceImpl(UserAnswerStatusRepository userAnswerStatusRepository) {
-//        this.userAnswerStatusRepository = userAnswerStatusRepository;
-//    }
 
     @Override
     public boolean checkEmail(String email)
@@ -101,7 +99,9 @@ public class AnswerServiceImpl implements AnswerService
     @Override
     public ArrayList<Answer> getAllAnswerForQuestion(Integer id)
     {
-        return answerRepository.getAllAnswerForQuestion(id);  //ovde trebit question id d ago zejme, vo slucajov 3
+        Question question = questionRepository.findById(id);
+        ArrayList<Answer>lista = answerRepository.getAllByQuestionOrderByAnswerId(question);
+        return lista;
     }
 
     @Override
@@ -115,22 +115,11 @@ public class AnswerServiceImpl implements AnswerService
         return user.getId();
     }
 
-//    @Override
-//    @Transactional
-//    public ArrayList<UserAnswerStatus> checkIfPreviousVoted(Integer userId, Integer answerId)
-//    {
-//        String queryCheckIfUpVoted = "SELECT * FROM useranswerstatus WHERE useranswerstatus.answerid=?1 AND user_id=?2";
-//        Query nativeQueryCheckIfUpVoted = entityManager.createNativeQuery(queryCheckIfUpVoted, UserAnswerStatus.class);
-//        nativeQueryCheckIfUpVoted.setParameter(1, answerId);
-//        nativeQueryCheckIfUpVoted.setParameter(2, userId);
-//        return (ArrayList<UserAnswerStatus>) nativeQueryCheckIfUpVoted.getResultList();
-//    }
-
     @Override
     @Transactional
     public ArrayList<UserAnswerStatus> checkIfPreviousVoted(Integer userId, Integer answerId)
     {
-        String queryCheckIfUpVoted = "SELECT * FROM useranswerstatus WHERE answer_id=?1 AND user_id=?2";
+        String queryCheckIfUpVoted = "SELECT * FROM useranswerstatus WHERE answer_id=?1 AND users=?2";
         Query nativeQueryCheckIfUpVoted = entityManager.createNativeQuery(queryCheckIfUpVoted, UserAnswerStatus.class);
         nativeQueryCheckIfUpVoted.setParameter(1, answerId);
         nativeQueryCheckIfUpVoted.setParameter(2, userId);
@@ -139,9 +128,9 @@ public class AnswerServiceImpl implements AnswerService
 
     @Override
     @Transactional
-    public void insertNewUserAnswerStatus(Integer userId, Integer answerId, boolean status)
+    public void insertNewUserAnswerStatus(Integer userId,Integer answerId, boolean status)
     {
-        String queryToInsert = "INSERT INTO useranswerstatus(answer_id,userid,status) VALUES (?1,?2,?3)";
+        String queryToInsert = "INSERT INTO useranswerstatus(answer_id,users,status) VALUES (?1,?2,?3)";
         Query nativeQueryToInsert = entityManager.createNativeQuery(queryToInsert);
         nativeQueryToInsert.setParameter(1, answerId);
         nativeQueryToInsert.setParameter(2, userId);
@@ -202,7 +191,7 @@ public class AnswerServiceImpl implements AnswerService
         ArrayList<UserAnswerStatus> userAnswerStatusArrayList = checkIfPreviousVoted(userId, userAnswerStatusDTO.getAnswerId());
         if (userAnswerStatusArrayList.isEmpty())
         {
-            //insertNewUserAnswerStatus(userId, userAnswerStatusDTO.getAnswerId(), true);
+          //  insertNewUserAnswerStatus(userId, userAnswerStatusDTO.getAnswerId(), true);
             updateUpVotes(1, userAnswerStatusDTO.getAnswerId());
         }
         else
@@ -269,21 +258,6 @@ public class AnswerServiceImpl implements AnswerService
         }
     }
 
-    @Override
-    public void deleteAnswer2(Answer answer) {
-        {
-            Answer answerToDelete = answerRepository.findById(answer.getAnswerId());
-            User user = userRepository.findByEmail(answer.getCreator());
-            if (answerToDelete.getCreator().equals(user.getEmail()))
-            {
-//                String queryDeleteAnswer = "DELETE FROM answer WHERE answer.answer_id=?1";
-//                Query nativeQueryDeleteAnswer = entityManager.createNativeQuery(queryDeleteAnswer);
-//                nativeQueryDeleteAnswer.setParameter(1, answerToDelete.getAnswerId());
-//                nativeQueryDeleteAnswer.executeUpdate();
-                //answerRepository.deleteById(Long.valueOf(answer.getAnswerId())); //ovde sakat int
-                answerRepository.getAnswerById(answer.getAnswerId());
-            }
-        }
-    }
+
 
 }

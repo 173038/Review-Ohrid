@@ -6,7 +6,9 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "useranswerstatus")
+@IdClass(UserAnswerStatus.class)
 public class UserAnswerStatus implements Serializable{
+
 
     @Id
     @JoinColumn(name = "id")
