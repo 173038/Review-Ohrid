@@ -13,6 +13,7 @@ import com.example.reviewohrid.model.UserAnswerStatus;
 import com.example.reviewohrid.repository.AnswerRepository;
 import com.example.reviewohrid.repository.QuestionRepository;
 //import com.example.reviewohrid.repository.UserAnswerStatusRepository;
+import com.example.reviewohrid.repository.UserAnswerStatusRepository;
 import com.example.reviewohrid.repository.UserRepository;
 import com.example.reviewohrid.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class AnswerServiceImpl implements AnswerService
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserAnswerStatusRepository userAnswerStatusRepository;
 
 
     @Override
@@ -85,6 +89,7 @@ public class AnswerServiceImpl implements AnswerService
             answer.setDownvotes(0);
             answer.setUpvotes(0);
             answer.setCreatedDate(Instant.now());
+
             Question question = questionRepository.findById(answerDTO.getId());
             if (question == null)
             {
@@ -119,23 +124,48 @@ public class AnswerServiceImpl implements AnswerService
     @Transactional
     public ArrayList<UserAnswerStatus> checkIfPreviousVoted(Integer userId, Integer answerId)
     {
-        String queryCheckIfUpVoted = "SELECT * FROM useranswerstatus WHERE answer_id=?1 AND users=?2";
+        String queryCheckIfUpVoted = "SELECT * FROM useranswerstatus WHERE answer_answer_id=?1 AND users=?2";
         Query nativeQueryCheckIfUpVoted = entityManager.createNativeQuery(queryCheckIfUpVoted, UserAnswerStatus.class);
         nativeQueryCheckIfUpVoted.setParameter(1, answerId);
         nativeQueryCheckIfUpVoted.setParameter(2, userId);
         return (ArrayList<UserAnswerStatus>) nativeQueryCheckIfUpVoted.getResultList();
     }
 
+
+    public UserAnswerStatus checkIfPreviousVoted1(Integer userId, Integer answerId){
+        UserAnswerStatus userAnswerStatus = this.userAnswerStatusRepository.findById(Long.valueOf(userId)).get();
+        if(userAnswerStatus.isStatus()){
+            return userAnswerStatus;
+        }
+        else return null;
+    }  //TODO: ovde
+
+
+
+//    @Override
+//    @Transactional
+//    public void insertNewUserAnswerStatus(Integer userId,Integer answerId, boolean status)
+//    {
+//        String queryToInsert = "INSERT INTO useranswerstatus(answer_id,users,status) VALUES (?1,?2,?3)";
+//        Query nativeQueryToInsert = entityManager.createNativeQuery(queryToInsert);
+//        nativeQueryToInsert.setParameter(1, answerId);
+//        nativeQueryToInsert.setParameter(2, userId);
+//        nativeQueryToInsert.setParameter(3, status);
+//        nativeQueryToInsert.executeUpdate();
+//    }
+
     @Override
     @Transactional
     public void insertNewUserAnswerStatus(Integer userId,Integer answerId, boolean status)
     {
-        String queryToInsert = "INSERT INTO useranswerstatus(answer_id,users,status) VALUES (?1,?2,?3)";
-        Query nativeQueryToInsert = entityManager.createNativeQuery(queryToInsert);
-        nativeQueryToInsert.setParameter(1, answerId);
-        nativeQueryToInsert.setParameter(2, userId);
-        nativeQueryToInsert.setParameter(3, status);
-        nativeQueryToInsert.executeUpdate();
+        User user=this.userRepository.findById(userId);
+        Answer answer=this.answerRepository.getAnswerById(answerId);
+  //      UserAnswerStatus userAnswerStatus = new UserAnswerStatus(user,answer , status);
+        UserAnswerStatus userAnswerStatus1 = new UserAnswerStatus();
+        userAnswerStatus1.setUser(user);
+        userAnswerStatus1.setAnswer(answer);
+        userAnswerStatus1.setStatus(status);
+        this.userAnswerStatusRepository.save(userAnswerStatus1);
     }
 
     @Override
@@ -189,9 +219,10 @@ public class AnswerServiceImpl implements AnswerService
     {
         Integer userId = getUserIdFromEmail(userAnswerStatusDTO.getUserEmail());
         ArrayList<UserAnswerStatus> userAnswerStatusArrayList = checkIfPreviousVoted(userId, userAnswerStatusDTO.getAnswerId());
+        //UserAnswerStatus userAnswerStatus = checkIfPreviousVoted1(userId, userAnswerStatusDTO.getAnswerId());
         if (userAnswerStatusArrayList.isEmpty())
         {
-          //  insertNewUserAnswerStatus(userId, userAnswerStatusDTO.getAnswerId(), true);
+            insertNewUserAnswerStatus(userId, userAnswerStatusDTO.getAnswerId(), true);
             updateUpVotes(1, userAnswerStatusDTO.getAnswerId());
         }
         else
@@ -218,7 +249,7 @@ public class AnswerServiceImpl implements AnswerService
         ArrayList<UserAnswerStatus> userAnswerStatusArrayList = checkIfPreviousVoted(userId, userAnswerStatusDTO.getAnswerId());
         if (userAnswerStatusArrayList.isEmpty())
         {
-            //  insertNewUserAnswerStatus(userId, userAnswerStatusDTO.getAnswerId(), false);
+            insertNewUserAnswerStatus(userId, userAnswerStatusDTO.getAnswerId(), false);
             updateDownVotes(1, userAnswerStatusDTO.getAnswerId());
         }
         else
@@ -258,6 +289,37 @@ public class AnswerServiceImpl implements AnswerService
         }
     }
 
-
+    @Override
+    public Answer validateAndSave1(Answer answer) throws InvalidAnswerException
+    {
+        ArrayList<String> res = new ArrayList<>();
+        if (checkEmail(answer.getCreator()) == false)
+        {
+            throw new InvalidAnswerException("You are not logged in. Please log in to answer the question");
+        }
+        if (checkAnswer(answer.getAnswer()) == false)
+        {
+            throw new InvalidAnswerException("Answer is empty. Please enter answer");
+        }
+        if (res.isEmpty())
+        {
+            Answer answer1 = new Answer();
+            answer1.setAnswer(answer.getAnswer());
+            answer1.setCreator(answer.getCreator());
+            answer1.setDownvotes(0);
+            answer1.setUpvotes(0);
+            answer1.setCreatedDate(Instant.now());
+         //   answer1.setUserId(answer.//TODO kako da zemam userId od answer, tamu imam lista od useri);
+            answer1.setUser(answer.getUser());
+            Question question = questionRepository.findById(answer1.getAnswerId());
+            if (question == null)
+            {
+                throw new InvalidAnswerException("Invalid question ID");
+            }
+            answer.setQuestion(question);
+            return answerRepository.save(answer1);
+        }
+        return null;
+    }
 
 }

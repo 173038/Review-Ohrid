@@ -92,7 +92,7 @@ public class QuestionServiceImpl implements QuestionService
             question.setModifier(questionDTO.getEmail());
             question.setTitle(questionDTO.getTitle());
             question.setQuestion(questionDTO.getQuestion());
-            question.setCreatedDate(Instant.now()); //TODO: ovde probvi
+            question.setCreatedDate(Instant.now());
             questionRepository.save(question);
         }
         return res;
@@ -112,18 +112,7 @@ public class QuestionServiceImpl implements QuestionService
         User user = userRepository.findById(userQuestionDTO.getUserId());
         if (questionToDelete.getCreator().equals(user.getEmail()))
         {
-            /*
-            ovde probvi da gi izbrisis site odgovori na to prasanje
-             */
-
-//            List<Answer>answerList=answerRepository.getAllAnswerForQuestion(questionToDelete.getId());
-//
-//            List<Answer>answers=questionToDelete.getAnswerList();
-//            for(Answer a : answerList){
-//                answerService.deleteAnswer2(a);
-//            }
             answerRepository.deleteAllByQuestion(questionToDelete);
-
             String queryDeleteQuestion = "DELETE FROM questions WHERE questions.id=?1";
             Query nativeQueryDeleteQuestion = entityManager.createNativeQuery(queryDeleteQuestion);
             nativeQueryDeleteQuestion.setParameter(1, questionToDelete.getId());

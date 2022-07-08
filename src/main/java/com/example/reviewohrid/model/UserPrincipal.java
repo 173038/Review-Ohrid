@@ -49,7 +49,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; //TODO ovde
+        return true;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class UserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    } //TODO: bese false
+    }
 
     public void setPassword(String password) {
         this.password = password;

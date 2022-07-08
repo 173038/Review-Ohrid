@@ -29,7 +29,7 @@ public class Question {
     @Column(name = "question", nullable = false)
     private String question;
 
-    @Column(name = "created_date",nullable = false) //TODO nullable false
+    @Column(name = "created_date",nullable = false)
     @CreatedDate
     private Instant createdDate;
 

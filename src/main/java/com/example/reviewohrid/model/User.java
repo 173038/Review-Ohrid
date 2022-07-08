@@ -19,20 +19,20 @@ public class User {
     @Column(name = "age", nullable = false)
     private Integer age;
 
-    @OneToMany(mappedBy = "user")
-    private List<UserAnswerStatus> userAnswerStatusList;
+//    @OneToMany(mappedBy = "user")
+//    private List<UserAnswerStatus> userAnswerStatusList;
 
     public User() {
     }
 
 
-    public User(Integer id, String email, String password, String username, Integer age, List<UserAnswerStatus> userAnswerStatusList) {
+    public User(Integer id, String email, String password, String username, Integer age) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.username = username;
         this.age = age;
-        this.userAnswerStatusList = userAnswerStatusList;
+      //  this.userAnswerStatusList = userAnswerStatusList;
     }
 
     public Integer getId() {
@@ -75,11 +75,11 @@ public class User {
         this.age = age;
     }
 
-    public List<UserAnswerStatus> getUserAnswerStatusList() {
-        return userAnswerStatusList;
-    }
-
-    public void setUserAnswerStatusList(List<UserAnswerStatus> userAnswerStatusList) {
-        this.userAnswerStatusList = userAnswerStatusList;
-    }
+//    public List<UserAnswerStatus> getUserAnswerStatusList() {
+//        return userAnswerStatusList;
+//    }
+//
+//    public void setUserAnswerStatusList(List<UserAnswerStatus> userAnswerStatusList) {
+//        this.userAnswerStatusList = userAnswerStatusList;
+//    }
 }

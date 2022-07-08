@@ -6,6 +6,16 @@ public class AnswerDTO {
     private String email;
     private Integer id;
 
+    private Integer userId;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     public String getAnswer() {
         return answer;
     }
