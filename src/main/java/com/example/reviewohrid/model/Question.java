@@ -33,12 +33,7 @@ public class Question {
     @CreatedDate
     private Instant createdDate;
 
-//    @OneToMany
-//    @JoinColumn(name= "userid")
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    private List<Answer> answerList;
     @OneToMany(mappedBy = "question")
-   // @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Answer> answerList;
 
     public Question() {

@@ -92,27 +92,6 @@ public class AuthenticationServiceImpl implements AuthenticationService
         return res;
     }
 
-    @Override
-    public int checkLoginEmail(String email)
-    {
-        User u = userRepo.findByEmail(email);
-        if (u != null)
-        {
-            return u.getId();
-        }
-        return -1;
-    }
-
-    @Override
-    public User checkLoginPassword(String password, int id)
-    {
-        User u = userRepo.findById(id);
-        if (passwordHashing.passwordEncoder().matches(password, u.getPassword()) == true)
-        {
-            return u;
-        }
-        return null;
-    }
 
     @Override
     public User validateAndLogin(UserDTO userDTO) throws UserValidateException

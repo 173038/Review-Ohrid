@@ -128,11 +128,7 @@ public class QuestionServiceImpl implements QuestionService
             lista= (ArrayList<Answer>) nativeQueryAnswersToDelete.getResultList();
 
         for(int i=0;i<lista.size();i++){
-
-
             answerService.deleteAnswer1(lista.get(i));
-
-          //  answerRepository.delete(lista.get(i));
         }
 
 

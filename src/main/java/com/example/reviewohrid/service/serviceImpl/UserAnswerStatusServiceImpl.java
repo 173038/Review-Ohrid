@@ -26,13 +26,4 @@ public class UserAnswerStatusServiceImpl implements UserAnswerStatusService
         return (ArrayList<UserAnswerStatus>) nativeQueryFindAllByUserId.getResultList();
     }
 
-    @Override
-    public Integer getUserId(String email)
-    {
-        String queryFindUserId = "SELECT * FROM user WHERE email=?1";
-        Query nativeQueryFindUserId = entityManager.createNativeQuery(queryFindUserId, User.class);
-        nativeQueryFindUserId.setParameter(1, email);
-        User user = (User) nativeQueryFindUserId.getSingleResult();
-        return user.getId();
-    }
 }

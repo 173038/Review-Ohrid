@@ -63,7 +63,6 @@ public class AuthenticationController
         }
     }
 
-
     @PostMapping("/login-successful")
     @ResponseBody
     public ResponseEntity<User> processLogin(@RequestParam("email") String email, @RequestParam("password") String password)
@@ -77,7 +76,6 @@ public class AuthenticationController
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return ResponseEntity.ok(u);
     }
-
 
     @GetMapping("/logout")
     public String logout()

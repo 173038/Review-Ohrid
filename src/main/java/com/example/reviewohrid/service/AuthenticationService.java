@@ -16,10 +16,6 @@ public interface AuthenticationService {
 
     ArrayList<String> validateAndSave(User user);
 
-    int checkLoginEmail(String email);
-
-    User checkLoginPassword(String password, int id);
-
     User validateAndLogin(UserDTO userDTO) throws UserValidateException;
 
     User findByEmail(String email);

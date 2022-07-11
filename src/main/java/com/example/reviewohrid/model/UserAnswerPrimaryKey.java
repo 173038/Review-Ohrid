@@ -8,10 +8,7 @@ public class UserAnswerPrimaryKey implements Serializable
     private User user;
     private Answer answer;
 
-    public UserAnswerPrimaryKey()
-    {
-
-    }
+    public UserAnswerPrimaryKey() {}
 
     public UserAnswerPrimaryKey(User userId, Answer answerId)
     {

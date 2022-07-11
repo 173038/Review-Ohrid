@@ -8,6 +8,4 @@ public interface UserAnswerStatusService {
 
     ArrayList<UserAnswerStatus> getAllByUserId(Integer id);
 
-    Integer getUserId(String email);
-
 }

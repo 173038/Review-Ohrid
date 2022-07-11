@@ -19,9 +19,6 @@ public class User {
     @Column(name = "age", nullable = false)
     private Integer age;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<UserAnswerStatus> userAnswerStatusList;
-
     public User() {
     }
 
@@ -32,7 +29,6 @@ public class User {
         this.password = password;
         this.username = username;
         this.age = age;
-      //  this.userAnswerStatusList = userAnswerStatusList;
     }
 
     public Integer getId() {
@@ -75,11 +71,4 @@ public class User {
         this.age = age;
     }
 
-//    public List<UserAnswerStatus> getUserAnswerStatusList() {
-//        return userAnswerStatusList;
-//    }
-//
-//    public void setUserAnswerStatusList(List<UserAnswerStatus> userAnswerStatusList) {
-//        this.userAnswerStatusList = userAnswerStatusList;
-//    }
 }

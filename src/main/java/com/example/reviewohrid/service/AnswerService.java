@@ -21,8 +21,6 @@ public interface AnswerService {
 
     Answer validateAndSave(AnswerDTO answerDTO) throws InvalidAnswerException;
 
-    Answer validateAndSave1(Answer answer) throws InvalidAnswerException;
-
     ArrayList<Answer> getAllAnswerForQuestion(Integer id);
 
     Integer getUserIdFromEmail(String email);
