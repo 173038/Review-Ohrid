@@ -124,7 +124,7 @@ public class AnswerServiceImpl implements AnswerService
     @Transactional
     public ArrayList<UserAnswerStatus> checkIfPreviousVoted(Integer userId, Integer answerId)
     {
-        String queryCheckIfUpVoted = "SELECT * FROM useranswerstatus WHERE answer_answer_id=?1 AND users=?2";
+        String queryCheckIfUpVoted = "SELECT * FROM useranswerstatus WHERE answer_answer_id=?1 AND user_id=?2";
         Query nativeQueryCheckIfUpVoted = entityManager.createNativeQuery(queryCheckIfUpVoted, UserAnswerStatus.class);
         nativeQueryCheckIfUpVoted.setParameter(1, answerId);
         nativeQueryCheckIfUpVoted.setParameter(2, userId);
@@ -172,40 +172,53 @@ public class AnswerServiceImpl implements AnswerService
     @Transactional
     public void deleteUserAnswerStatus(Integer userId, Integer answerId)
     {
-        String queryDeleteRow = "DELETE FROM useranswerstatus WHERE user_id=?1 AND answer_id=?2";
+        String queryDeleteRow = "DELETE FROM useranswerstatus WHERE user_id=?1 AND answer_answer_id=?2";
         Query nativeQueryDeleteRow = entityManager.createNativeQuery(queryDeleteRow);
         nativeQueryDeleteRow.setParameter(1, userId);
         nativeQueryDeleteRow.setParameter(2, answerId);
         nativeQueryDeleteRow.executeUpdate();
+
+
+
     }
 
     @Override
     @Transactional
     public void updateUpVotes(Integer newUpVote, Integer answerId)
     {
-        String queryUpdateUpVotes = "UPDATE answer SET upvotes=upvotes+?2 WHERE answer_id=?1";
-        Query nativeQueryUpdateUpVotes = entityManager.createNativeQuery(queryUpdateUpVotes);
-        nativeQueryUpdateUpVotes.setParameter(1, answerId);
-        nativeQueryUpdateUpVotes.setParameter(2, newUpVote);
-        nativeQueryUpdateUpVotes.executeUpdate();
+//        String queryUpdateUpVotes = "UPDATE answer SET upvotes=upvotes+?1 WHERE answer_id=?2";
+//        Query nativeQueryUpdateUpVotes = entityManager.createNativeQuery(queryUpdateUpVotes);
+//        nativeQueryUpdateUpVotes.setParameter(1, newUpVote);
+//        nativeQueryUpdateUpVotes.setParameter(2, answerId);
+//        nativeQueryUpdateUpVotes.executeUpdate();
+
+        Answer answer = answerRepository.findById(answerId);
+        answer.setUpvotes(answer.getUpvotes()+newUpVote);
+        answerRepository.save(answer);
+
+
     }
 
     @Override
     @Transactional
     public void updateDownVotes(Integer newDownVote, Integer answerId)
     {
-        String queryUpdateDownVotes = "UPDATE answer SET downvotes=downvotes+?2 WHERE answer_id=?1";
-        Query nativeQueryUpdateDownVotes = entityManager.createNativeQuery(queryUpdateDownVotes);
-        nativeQueryUpdateDownVotes.setParameter(1, answerId);
-        nativeQueryUpdateDownVotes.setParameter(2, newDownVote);
-        nativeQueryUpdateDownVotes.executeUpdate();
+//        String queryUpdateDownVotes = "UPDATE answer SET downvotes=downvotes+?2 WHERE answer_id=?1";
+//        Query nativeQueryUpdateDownVotes = entityManager.createNativeQuery(queryUpdateDownVotes);
+//        nativeQueryUpdateDownVotes.setParameter(1, answerId);
+//        nativeQueryUpdateDownVotes.setParameter(2, newDownVote);
+//        nativeQueryUpdateDownVotes.executeUpdate();
+
+        Answer answer = answerRepository.findById(answerId);
+        answer.setDownvotes(answer.getDownvotes()+newDownVote);
+        answerRepository.save(answer);
     }
 
     @Override
     @Transactional
     public void updateUserAnswerStatus(Integer userId, Integer answerId, boolean status)
     {
-        String queryUpdateStatusToTrue = "UPDATE useranswerstatus SET status=?3 WHERE answer_id=?1 AND user_id=?2";
+        String queryUpdateStatusToTrue = "UPDATE useranswerstatus SET status=?3 WHERE answer_answer_id=?1 AND user_id=?2"; //        String queryUpdateStatusToTrue = "UPDATE useranswerstatus SET status=?3 WHERE answer_id=?1 AND user_id=?2";
         Query nativeQueryUpdateStatusToTrue = entityManager.createNativeQuery(queryUpdateStatusToTrue);
         nativeQueryUpdateStatusToTrue.setParameter(1, answerId);
         nativeQueryUpdateStatusToTrue.setParameter(2, userId);
