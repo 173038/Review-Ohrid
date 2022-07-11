@@ -36,7 +36,7 @@ public class Answer implements Comparable<Answer> {
 
     @OneToMany
     @JoinColumn(name = "users")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<UserAnswerStatus> userAnswerStatusList;
 
     @ManyToOne

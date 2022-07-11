@@ -23,9 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 import static java.util.Comparator.*;
 
@@ -290,6 +288,19 @@ public class AnswerServiceImpl implements AnswerService
         User user = userRepository.findById(userAnswerDTO.getUserId());
         if (answerToDelete.getCreator().equals(user.getEmail()))
         {
+            List<UserAnswerStatus> lista= new ArrayList<>();
+            Integer answerId = answerToDelete.getAnswerId();
+            String queryCheckIfUpVoted = "SELECT * FROM useranswerstatus WHERE answer_answer_id=?1";
+            Query nativeQueryCheckIfUpVoted = entityManager.createNativeQuery(queryCheckIfUpVoted, UserAnswerStatus.class);
+            nativeQueryCheckIfUpVoted.setParameter(1, answerId);
+            lista= (ArrayList<UserAnswerStatus>) nativeQueryCheckIfUpVoted.getResultList(); //do ovde gi imame vo lista site stavki za toj answer
+
+            for(int i=0;i<lista.size();i++){
+                userAnswerStatusRepository.delete(lista.get(i));
+            }
+
+
+
             String queryDeleteAnswer = "DELETE FROM answer WHERE answer.answer_id=?1";
             Query nativeQueryDeleteAnswer = entityManager.createNativeQuery(queryDeleteAnswer);
             nativeQueryDeleteAnswer.setParameter(1, answerToDelete.getAnswerId());
