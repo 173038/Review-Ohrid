@@ -314,6 +314,26 @@ public class AnswerServiceImpl implements AnswerService
     }
 
     @Override
+    public void deleteAnswer1(Answer answer) {
+
+            List<UserAnswerStatus> lista= new ArrayList<>();
+            Integer answerId = answer.getAnswerId();
+            String queryCheckIfUpVoted = "SELECT * FROM useranswerstatus WHERE answer_answer_id=?1";
+            Query nativeQueryCheckIfUpVoted = entityManager.createNativeQuery(queryCheckIfUpVoted, UserAnswerStatus.class);
+            nativeQueryCheckIfUpVoted.setParameter(1, answerId);
+            lista= (ArrayList<UserAnswerStatus>) nativeQueryCheckIfUpVoted.getResultList(); //do ovde gi imame vo lista site stavki za toj answer
+
+            for(int i=0;i<lista.size();i++){
+                userAnswerStatusRepository.delete(lista.get(i));
+            }
+
+            String queryDeleteAnswer = "DELETE FROM answer WHERE answer.answer_id=?1";
+            Query nativeQueryDeleteAnswer = entityManager.createNativeQuery(queryDeleteAnswer);
+            nativeQueryDeleteAnswer.setParameter(1, answer.getAnswerId());
+            nativeQueryDeleteAnswer.executeUpdate();
+    }
+
+    @Override
     public Answer validateAndSave1(Answer answer) throws InvalidAnswerException
     {
         ArrayList<String> res = new ArrayList<>();

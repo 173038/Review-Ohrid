@@ -38,7 +38,7 @@ public class Question {
 //    @OnDelete(action = OnDeleteAction.CASCADE)
 //    private List<Answer> answerList;
     @OneToMany(mappedBy = "question")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+   // @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Answer> answerList;
 
     public Question() {

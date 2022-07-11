@@ -45,5 +45,7 @@ public interface AnswerService {
 
     void deleteAnswer(UserAnswerDTO userAnswerDTO) throws InvalidCreatorException;
 
+    void deleteAnswer1(Answer answer);
+
 
 }

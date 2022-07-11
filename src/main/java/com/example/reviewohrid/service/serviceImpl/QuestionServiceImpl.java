@@ -1,13 +1,17 @@
 package com.example.reviewohrid.service.serviceImpl;
 
+import com.example.reviewohrid.DTO.AnswerDTO;
 import com.example.reviewohrid.DTO.QuestionDTO;
+import com.example.reviewohrid.DTO.UserAnswerDTO;
 import com.example.reviewohrid.DTO.UserQuestionDTO;
 import com.example.reviewohrid.exceptions.InvalidCreatorException;
 import com.example.reviewohrid.model.Answer;
 import com.example.reviewohrid.model.Question;
 import com.example.reviewohrid.model.User;
+import com.example.reviewohrid.model.UserAnswerStatus;
 import com.example.reviewohrid.repository.AnswerRepository;
 import com.example.reviewohrid.repository.QuestionRepository;
+import com.example.reviewohrid.repository.UserAnswerStatusRepository;
 import com.example.reviewohrid.repository.UserRepository;
 import com.example.reviewohrid.service.AnswerService;
 import com.example.reviewohrid.service.QuestionService;
@@ -38,6 +42,10 @@ public class QuestionServiceImpl implements QuestionService
 
     @Autowired
     AnswerRepository answerRepository;
+
+    @Autowired
+    UserAnswerStatusRepository userAnswerStatusRepository;
+
 
     @Override
     public boolean checkTitle(String email)
@@ -110,9 +118,25 @@ public class QuestionServiceImpl implements QuestionService
     {
         Question questionToDelete = questionRepository.findById(userQuestionDTO.getQuestionId());
         User user = userRepository.findById(userQuestionDTO.getUserId());
-        if (questionToDelete.getCreator().equals(user.getEmail()))
-        {
-            answerRepository.deleteAllByQuestion(questionToDelete);
+        if (questionToDelete.getCreator().equals(user.getEmail())){
+
+            List<Answer> lista= new ArrayList<>();
+            Integer questionId = questionToDelete.getId();
+            String answersToDelete = "SELECT * FROM answer WHERE question_id=?1";
+            Query nativeQueryAnswersToDelete = entityManager.createNativeQuery(answersToDelete, Answer.class);
+            nativeQueryAnswersToDelete.setParameter(1, questionId);
+            lista= (ArrayList<Answer>) nativeQueryAnswersToDelete.getResultList();
+
+        for(int i=0;i<lista.size();i++){
+
+
+            answerService.deleteAnswer1(lista.get(i));
+
+          //  answerRepository.delete(lista.get(i));
+        }
+
+
+        answerRepository.deleteAllByQuestion(questionToDelete);
             String queryDeleteQuestion = "DELETE FROM questions WHERE questions.id=?1";
             Query nativeQueryDeleteQuestion = entityManager.createNativeQuery(queryDeleteQuestion);
             nativeQueryDeleteQuestion.setParameter(1, questionToDelete.getId());
